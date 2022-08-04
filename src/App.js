@@ -1,5 +1,6 @@
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import Navbar from "./components/Navbar.js";
 import Home from "./pages/home/Home.js";
 import Create from "./pages/create/Create.js";
 import Search from "./pages/search/Search.js";
@@ -11,20 +12,13 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/create">
-            <Create />
-          </Route>
-          <Route path="/search">
-            <Search />
-          </Route>
-          <Route path="/recipe/:id">
-            <Recipe />
-          </Route>
-        </Switch>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/create" element={<Create />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/recipe/:id" element={<Recipe />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );

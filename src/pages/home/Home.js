@@ -2,13 +2,19 @@ import { useFetch } from "../../hooks/useFetch.js";
 
 import "./Home.css";
 
+import RecipeList from "../../components/RecipeList.js";
+
 const Home = () => {
-  const { isPending, data, error } = useFetch("http://localhost:3000/recipes");
+  const {
+    isPending,
+    data: recipes,
+    error,
+  } = useFetch("http://localhost:3000/recipes");
 
   return (
     <div className="home">
       {isPending && <p className="loading">Loading...</p>}
-      {data && data.map((recipe) => <h2 key={recipe.id}>{recipe.title}</h2>)}
+      {recipes && <RecipeList recipes={recipes} />}
       {error && <p className="error">{error}</p>}
     </div>
   );

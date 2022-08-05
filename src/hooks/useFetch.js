@@ -27,10 +27,10 @@ export const useFetch = (url) => {
       } catch (error) {
         
         if (error.name === "AbortError") {
-          console.log("Fetch got aborted.");
+          console.log("Fetch has been aborted!");
         } else {
           setIsPending(false);
-          setError("Could not fetch.");
+          setError("Couldn't fetch the data!");
         }
       }
     };
@@ -40,7 +40,6 @@ export const useFetch = (url) => {
     return () => {
       controller.abort();
     };
-    
   }, [url]);
 
   return { isPending, data, error };

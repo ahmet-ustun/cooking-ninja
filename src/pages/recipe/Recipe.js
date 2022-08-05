@@ -10,14 +10,14 @@ const Recipe = () => {
 
   return (
     <div className="recipe">
-      {isPending && <p classname="loading">Loading...</p>}
+      {isPending && <p className="loading">Loading...</p>}
       {recipe && (
         <>
           <h2 className="page-title">{recipe.title}</h2>
           <p>Takes {recipe.cookingTime} to cook.</p>
           <ul>
             {recipe.ingredients.map((ingredient) => (
-              <li>{ingredient}</li>
+              <li key={ingredient}>{ingredient}</li>
             ))}
           </ul>
           <p className="method">{recipe.method}</p>

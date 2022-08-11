@@ -68,7 +68,7 @@ const Create = () => {
               type="text"
               value={newIngredient}
               ref={ingredientInput}
-              onChange={(e) => setNewIngredient(e.target.value)}
+              onChange={(event) => setNewIngredient(event.target.value)}
             />
             <button className="btn" onClick={handleAdd}>
               add

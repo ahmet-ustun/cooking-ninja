@@ -16,7 +16,6 @@ const Create = () => {
   const {
     postData,
     data: recipe,
-    error,
   } = useFetch("http://localhost:3000/recipes", "POST");
 
   const handleSubmit = (event) => {

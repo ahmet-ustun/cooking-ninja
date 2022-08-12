@@ -6,7 +6,7 @@ import "./Navbar.css";
 import Searchbar from "./Searchbar.js";
 
 const Navbar = () => {
-  const { color, changeColor } = useTheme;
+  const { color } = useTheme();
 
   return (
     <div className="navbar" style={{ background: color }}>

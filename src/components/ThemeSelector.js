@@ -17,7 +17,7 @@ const ThemeSelector = () => {
       <div className="mode-toggle">
         <img
           src={modeIcon}
-          alt="Light/Dark Mode Toggle Icon"
+          alt="Icon for Toggling Light/Dark Mode"
           style={{ filter: mode === "light" ? "invert(20%)" : "invert(100%)" }}
           onClick={toggleMode}
         />

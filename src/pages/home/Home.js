@@ -17,25 +17,28 @@ const Home = () => {
   useEffect(() => {
     setIsPending(true);
 
-    const unsubscribe = firestore.collection("recipes").onSnapshot(
-      (snapshot) => {
-        if (snapshot.empty) {
-          setError("There aren't any recipes yet!");
-          setIsPending(false);
-        } else {
-          const results = [];
-          snapshot.docs.forEach((doc) => {
-            results.push({ id: doc.id, ...doc.data() });
-          });
-          setRecipes(results);
+    const unsubscribe = firestore
+      .collection("recipes")
+      .orderBy("title")
+      .onSnapshot(
+        (snapshot) => {
+          if (snapshot.empty) {
+            setError("There aren't any recipes yet!");
+            setIsPending(false);
+          } else {
+            const results = [];
+            snapshot.docs.forEach((doc) => {
+              results.push({ id: doc.id, ...doc.data() });
+            });
+            setRecipes(results);
+            setIsPending(false);
+          }
+        },
+        (error) => {
+          setError(error.message);
           setIsPending(false);
         }
-      },
-      (error) => {
-        setError(error.message);
-        setIsPending(false);
-      }
-    );
+      );
 
     return () => unsubscribe();
   }, []);

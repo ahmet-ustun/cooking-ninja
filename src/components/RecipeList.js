@@ -11,7 +11,7 @@ const RecipeList = ({ recipes }) => {
   const { mode } = useTheme();
 
   if (recipes.length === 0) {
-    return <div className="error">No results for recipes!</div>;
+    return <div className="error">There aren't such recipes yet!</div>;
   }
 
   const handleClick = (id) => {

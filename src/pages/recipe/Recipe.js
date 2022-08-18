@@ -18,23 +18,26 @@ const Recipe = () => {
   useEffect(() => {
     setIsPending(true);
 
-    firestore
+    const unsubscribe = firestore
       .collection("recipes")
       .doc(id)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          setRecipe(doc.data());
-          setIsPending(false);
-        } else {
-          setError("404 - Couldn't find the recipe!");
+      .onSnapshot(
+        (doc) => {
+          if (doc.exists) {
+            setRecipe(doc.data());
+            setIsPending(false);
+          } else {
+            setError("404 - Couldn't find the recipe!");
+            setIsPending(false);
+          }
+        },
+        (error) => {
+          setError(error.message);
           setIsPending(false);
         }
-      })
-      .catch((error) => {
-        setError(error.message);
-        setIsPending(false);
-      });
+      );
+
+    return () => unsubscribe();
   }, [id]);
 
   return (

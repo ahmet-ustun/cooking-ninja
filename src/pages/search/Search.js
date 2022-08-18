@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useFetch } from "../../hooks/useFetch.js";
 import { useTheme } from "../../hooks/useTheme.js";
+
+import { firestore } from "../../firebase/config.js";
 
 import "./Search.css";
 
@@ -12,8 +14,41 @@ const Search = () => {
   const query = queryParams.get("query");
   const { mode } = useTheme();
 
-  const url = `http://localhost:3000/recipes?q=${query}`;
-  const { isPending, data: recipes, error } = useFetch(url);
+  const [recipes, setRecipes] = useState(null);
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setIsPending(true);
+
+    const unsubscribe = firestore
+      .collection("recipes")
+      .orderBy("title")
+      .onSnapshot(
+        (snapshot) => {
+          if (snapshot.empty) {
+            setError("There aren't any recipes yet!");
+            setIsPending(false);
+          } else {
+            const results = [];
+            snapshot.docs.forEach((doc) => {
+              const docData = doc.data();
+              if (docData.title.includes(query)) {
+                results.push({ id: doc.id, ...docData });
+              }
+            });
+            setRecipes(results);
+            setIsPending(false);
+          }
+        },
+        (error) => {
+          setError(error.message);
+          setIsPending(false);
+        }
+      );
+
+    return () => unsubscribe();
+  }, [query]);
 
   return (
     <div className={`search ${mode}`}>

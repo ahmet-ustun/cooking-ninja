@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useFetch } from "../../hooks/useFetch.js";
 import { useTheme } from "../../hooks/useTheme.js";
+
+import { firestore } from "../../firebase/config.js";
 
 import "./Create.css";
 
@@ -11,24 +12,28 @@ const Create = () => {
   const [cookingTime, setCookingTime] = useState("");
   const [newIngredient, setNewIngredient] = useState("");
   const [ingredients, setIngredients] = useState([]);
+
   const ingredientInput = useRef(null);
+
   const navigate = useNavigate();
   const { mode } = useTheme();
 
-  const { postData, data: recipe } = useFetch(
-    "http://localhost:3000/recipes",
-    "POST"
-  );
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    postData({
+    const document = {
       title,
       ingredients,
       method,
       cookingTime: `${cookingTime} minutes`,
-    });
+    };
+
+    try {
+      await firestore.collection("recipes").add(document);
+      navigate("/");
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const handleAdd = (event) => {
@@ -42,12 +47,6 @@ const Create = () => {
     setNewIngredient("");
     ingredientInput.current.focus();
   };
-
-  useEffect(() => {
-    if (recipe) {
-      navigate("/");
-    }
-  }, [recipe, navigate]);
 
   return (
     <div className={`create ${mode}`}>

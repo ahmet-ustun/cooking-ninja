@@ -17,10 +17,8 @@ const Home = () => {
   useEffect(() => {
     setIsPending(true);
 
-    firestore
-      .collection("recipes")
-      .get()
-      .then((snapshot) => {
+    const unsubscribe = firestore.collection("recipes").onSnapshot(
+      (snapshot) => {
         if (snapshot.empty) {
           setError("There aren't any recipes yet!");
           setIsPending(false);
@@ -32,11 +30,14 @@ const Home = () => {
           setRecipes(results);
           setIsPending(false);
         }
-      })
-      .catch((error) => {
+      },
+      (error) => {
         setError(error.message);
         setIsPending(false);
-      });
+      }
+    );
+
+    return () => unsubscribe();
   }, []);
 
   return (

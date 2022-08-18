@@ -8,8 +8,8 @@
 
 .theme-buttons div {
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 26px;
+  height: 26px;
   cursor: pointer;
   margin-left: 15px;
   border-radius: 50%;
@@ -20,7 +20,7 @@
 }
 
 .mode-toggle img {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
 }

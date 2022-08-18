@@ -10,7 +10,7 @@ import RecipeList from "../../components/RecipeList.js";
 const Home = () => {
   const { mode } = useTheme();
 
-  const [data, setData] = useState(null);
+  const [recipes, setRecipes] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(false);
 
@@ -21,7 +21,6 @@ const Home = () => {
       .collection("recipes")
       .get()
       .then((snapshot) => {
-        console.log(snapshot);
         if (snapshot.empty) {
           setError("There aren't any recipes yet!");
           setIsPending(false);
@@ -30,7 +29,7 @@ const Home = () => {
           snapshot.docs.forEach((doc) => {
             results.push({ id: doc.id, ...doc.data() });
           });
-          setData(results);
+          setRecipes(results);
           setIsPending(false);
         }
       })
@@ -42,7 +41,7 @@ const Home = () => {
 
   return (
     <div className={`home ${mode}`}>
-      {data && <RecipeList recipes={data} />}
+      {recipes && <RecipeList recipes={recipes} />}
       {isPending && <p className="loading">Loading...</p>}
       {error && <p className="error">{error}</p>}
     </div>

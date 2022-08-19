@@ -11,7 +11,7 @@ import RecipeList from "../../components/RecipeList.js";
 const Search = () => {
   const queryString = useLocation().search;
   const queryParams = new URLSearchParams(queryString);
-  const query = queryParams.get("query");
+  const query = queryParams.get("query").toLowerCase();
   const { mode } = useTheme();
 
   const [recipes, setRecipes] = useState(null);
@@ -33,7 +33,7 @@ const Search = () => {
             const results = [];
             snapshot.docs.forEach((doc) => {
               const docData = doc.data();
-              if (docData.title.includes(query)) {
+              if (docData.title.toLowerCase().includes(query)) {
                 results.push({ id: doc.id, ...docData });
               }
             });
